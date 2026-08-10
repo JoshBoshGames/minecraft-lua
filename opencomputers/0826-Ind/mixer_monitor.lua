@@ -7,18 +7,8 @@ meta={}
   meta.raw_update_url = "https://raw.githubusercontent.com/JoshBoshGames/minecraft-lua/refs/heads/main/opencomputers/0826-Ind/mixer_monitor.lua"
 
 --Initialisation
-  --Library Requisition
-    os = require("os")
-    component = require("component")
-    computer = require("computer")
-    term = require("term")
-    redstone = component.redstone
-    sides = require("sides")
-    shell = require("shell")
-    keyboard= require("keyboard")
-    mixer = component.ie_mixer
-    
   --Acquire/Provide meta info
+    shell = require("shell")
     ARGS, OPTS = shell.parse(...) --Pulls CLI options and arguments
   --Mode Switching
     mode={}
@@ -46,8 +36,18 @@ meta={}
           "For more information, run: mixer_monitor --help"
         )
         os.sleep(1)
-    end
-
+    end  
+  
+  --Library Requisition
+    os = require("os")
+    component = require("component")
+    computer = require("computer")
+    term = require("term")
+    redstone = component.redstone
+    sides = require("sides")
+    keyboard= require("keyboard")
+    mixer = component.ie_mixer
+    
 
 --Runtime Functions
   --Memory Watchdog, reboots if over 95% limit
