@@ -15,6 +15,7 @@ meta={}
     term = require("term")
     rs = component.redstone
     sides = require("sides")
+    shell = require("shell")
     
   --Acquire/Provide meta info
     ARGS, OPTS = shell.parse(...) --Pulls CLI options and arguments
