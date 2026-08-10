@@ -139,6 +139,7 @@ end
 
 repeat
   runLoop()
+  os.sleep(0.05)
 until OPTS.o or keyboard.isKeyDown("q")
 
 --OLD CODE
