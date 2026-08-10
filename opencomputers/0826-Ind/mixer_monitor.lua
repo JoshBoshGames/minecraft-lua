@@ -116,10 +116,10 @@ function runLoop()
     termBuffer =termBuffer .. "Energy: " .. machineData.energyStored .. "/" .. machineData.maxEnergyStored .. "(" .. machineData.energyPercent .. ")\n"
   end
   termBuffer =(termBuffer ..
-  "Machine Active: "..machineData.activity.."\n"..
+  "Machine Active: "..tostring(machineData.activity).."\n"..
   "Recipe Valid: "..tostring(machineData.validity).."\n")
-  if OPTS.i then termBuffer =(termBuffer .. "Item Inputs:\n") end
   if OPTS.i then -- Check if inventory info is enabled
+    termBuffer =(termBuffer .. "Item Inputs:\n") 
     for i=1,12 do
       local itemData = machineData.itemInputs[i]
       if itemData.size ~= nil then
