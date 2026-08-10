@@ -126,7 +126,7 @@ function runLoop()
           " Input "..i..": "..
           itemData.size.."x "..
           itemData.name..
-          {[true]="(NBT)", [false]=""}[itemData.hasTag]..
+          {[true]="(NBT)", [false]=""}[itemData.hasTag==true]..
           {[true]="(Dur:"..(itemData.maxDamage - itemData.damage).."/"..itemData.maxDamage, [false]=""}[itemData.maxDamage~=0]..
           "\n" ..
           "Progress: "..itemData.Progress.."/"..itemData.maxProgress.."\n")
