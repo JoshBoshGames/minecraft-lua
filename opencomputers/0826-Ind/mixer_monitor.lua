@@ -92,7 +92,7 @@ function getMachineData()
     --progress, 
     --size (Actual Stack Count)
   end
-  
+  return data
 end
 
 --Main Loop
