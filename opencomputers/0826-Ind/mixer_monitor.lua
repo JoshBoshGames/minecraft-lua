@@ -2,7 +2,7 @@
 meta={}
   meta.name = "Immersive Engineering Mixer Control"
   meta.author = "JoshBoshGames"
-  meta.version = "v0.1.0"
+  meta.version = "v0.2.0"
   meta.view_url = "https://github.com/JoshBoshGames/minecraft-lua/blob/main/opencomputers/0826-Ind/mixer_monitor.lua"
   meta.raw_update_url = "https://raw.githubusercontent.com/JoshBoshGames/minecraft-lua/refs/heads/main/opencomputers/0826-Ind/mixer_monitor.lua"
 
@@ -17,18 +17,22 @@ meta={}
     mode.validity = sides[OPTS.validity_side]~=nil
     mode.enable = sides[OPTS.enable_side]~=nil
     mode.empty = sides[OPTS.empty_side]~=nil
+    mode.ingredientCount = (sides[OPTS.ingredient_side]~nil and OPTS.key_ingredient~=nil)
+    if mode.ingredientCount then keyIngredientQuantity=0 end
     if OPTS.help==true then --Help page
       print(
         "Usage: mixer_monitor [OPTION] [OPTION]...\n"..
-        "-e                       Show machine energy information\n"..
-        "-i                       Show machine item information\n"..
-        "-l                       Show machine fluid information\n"..
-        "-o                       Runs script once to get info snapshot\n"..
-        "--activity_side=[SIDE]   Set the activity reporting side for redstone out\n"..
-        "--validity_side=[SIDE]   Set the valid_recipe reporting side for redstone out\n"..
-        "--enable_side=[SIDE]     Set the redstone machine_enable side for redstone in\n"..
-        "--empty_side=[SIDE]      Set the empty items reporting side for redstone out\n"..
-        "--help                   Show this message and then close\n"
+        "-e                         Show machine energy information\n"..
+        "-i                         Show machine item information\n"..
+        "-l                         Show machine fluid information\n"..
+        "-o                         Runs script once to get info snapshot\n"..
+        "--activity_side=[SIDE]     Set the activity reporting side for redstone out\n"..
+        "--validity_side=[SIDE]     Set the valid_recipe reporting side for redstone out\n"..
+        "--enable_side=[SIDE]       Set the redstone machine_enable side for redstone in\n"..
+        "--empty_side=[SIDE]        Set the empty items reporting side for redstone out\n"..
+        "--key_ingredient=[REF]     Set the key ingredient to look for and monitor\n"..
+        "--ingredient_side=[SIDE]   Set the ingredient count monitor side for redstone output\n"..
+        "--help                     Show this message and then close\n"
       )
       os.exit()
     else
@@ -164,6 +168,17 @@ function runLoop()
       dataEmpty = dataEmpty or itemData.size~=nil
     end
     redstone.setOutput(sides[OPTS.empty_side], rsTable[dataEmpty])
+  end
+  if mode.ingredientCount then
+    local ingredientDeplete = false
+    local rsTable={[true]=15,[false]=0}
+      for i=1,8 do
+        local itemData=machineData.itemInputs[i]
+        if itemData.name==OPTS.key_ingredient then
+          redstone.setOutput(sides[OPTS.ingredient_side],rsTable[itemData.size < keyIngredientQuantity]
+          keyIngredientQuantity=itemData.Size[]
+        end
+      end
   end
   
   if not OPTS.o then termBuffer = termBuffer .. "Press Q to exit program\n" end
