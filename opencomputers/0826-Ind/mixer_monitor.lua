@@ -2,7 +2,7 @@
 meta={}
   meta.name = "Immersive Engineering Mixer Control"
   meta.author = "JoshBoshGames"
-  meta.version = "v0.2.1"
+  meta.version = "v0.2.2"
   meta.view_url = "https://github.com/JoshBoshGames/minecraft-lua/blob/main/opencomputers/0826-Ind/mixer_monitor.lua"
   meta.raw_update_url = "https://raw.githubusercontent.com/JoshBoshGames/minecraft-lua/refs/heads/main/opencomputers/0826-Ind/mixer_monitor.lua"
 
