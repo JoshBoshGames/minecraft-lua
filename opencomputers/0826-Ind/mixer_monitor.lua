@@ -116,9 +116,8 @@ function runLoop()
   end
   termBuffer =(termBuffer ..
   "Machine Active: "..machineData.activity.."\n"..
-  "Recipe Valid: "..machineData.validity.."\n"..
-  if OPTS.i then return "Item Inputs:\n" else return "" end
-  )
+  "Recipe Valid: "..machineData.validity.."\n")
+  if OPTS.i then termBuffer =(termBuffer .. "Item Inputs:\n") end
   if OPTS.i then -- Check if inventory info is enabled
     for i=1,12 do
       local itemData = machineData.itemInputs[i]
