@@ -60,7 +60,7 @@ function watchdog()
     tostring(math.floor((data.memUse / data.memCap)*100)).."%"
   )
   --auto-reboot
-  if memUse/memCap>0.95 then
+  if (data.memUse / data.memCap) > 0.95 then
     computer.shutdown(true)
   end
   return(data)
