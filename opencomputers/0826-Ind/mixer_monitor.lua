@@ -133,7 +133,7 @@ function runLoop()
       end
     end
   end
-  if not OPTS.o then termBuffer = termBuffer .. "Press Q to exit program" end
+  if not OPTS.o then termBuffer = termBuffer .. "Press Q to exit program\n" end
   term.write(termBuffer)
 end
 
