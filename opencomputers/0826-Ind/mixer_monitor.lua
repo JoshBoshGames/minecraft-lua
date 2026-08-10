@@ -78,7 +78,7 @@ function getMachineData()
   data.validity = component.ie_mixer.isValidRecipe()
   --Creating Table of item inputs
   data.itemInputs = {}
-  for i=1,12,1 do
+  for i=1,8 do
     data.itemInputs[i] = component.ie_mixer.getInputStack(i)
     --creates data.itemInputs table of 12 itemStack tables, occupied slots include fields for:
     --damage, 
