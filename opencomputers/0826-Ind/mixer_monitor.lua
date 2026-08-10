@@ -111,7 +111,7 @@ function runLoop()
   
   --Read Machine Data and parse
   machineData = getMachineData()
-  if OPTS.e then -- Check if energy info is enabled
+  if OPTS.e==true then -- Check if energy info is enabled
     termBuffer =(termBuffer .. "Energy: " .. machineData.energyStored .. "/" .. machineData.maxEnergyStored .. "(" .. machineData.energyPercent .. ")\n"
   end
   termBuffer =(termBuffer ..
