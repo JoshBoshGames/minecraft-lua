@@ -175,7 +175,7 @@ function runLoop()
       for i=1,8 do
         local itemData=machineData.itemInputs[i]
         if itemData.name==OPTS.key_ingredient then
-          redstone.setOutput(sides[OPTS.ingredient_side],rsTable[itemData.size < keyIngredientQuantity]
+          redstone.setOutput(sides[OPTS.ingredient_side],rsTable[itemData.size < keyIngredientQuantity])
           keyIngredientQuantity=itemData.Size[]
         end
       end
