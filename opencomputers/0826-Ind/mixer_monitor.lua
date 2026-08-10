@@ -9,6 +9,7 @@ meta={}
 --Initialisation
   --Acquire/Provide meta info
     shell = require("shell")
+    sides = require("sides")
     ARGS, OPTS = shell.parse(...) --Pulls CLI options and arguments
   --Mode Switching
     mode={}
@@ -44,7 +45,6 @@ meta={}
     computer = require("computer")
     term = require("term")
     redstone = component.redstone
-    sides = require("sides")
     keyboard= require("keyboard")
     mixer = component.ie_mixer
     
