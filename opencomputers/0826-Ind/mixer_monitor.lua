@@ -7,16 +7,16 @@ meta={}
   meta.raw_update_url = "https://raw.githubusercontent.com/JoshBoshGames/minecraft-lua/refs/heads/main/opencomputers/0826-Ind/mixer_monitor.lua"
 
 --Initialisation
-  --redstoneSide="west"
   --Library Requisition
     os = require("os")
     component = require("component")
     computer = require("computer")
     term = require("term")
-    rs = component.redstone
+    redstone = component.redstone
     sides = require("sides")
     shell = require("shell")
     keyboard= require("keyboard")
+    mixer = component.ie_mixer
     
   --Acquire/Provide meta info
     ARGS, OPTS = shell.parse(...) --Pulls CLI options and arguments
@@ -25,6 +25,7 @@ meta={}
     mode.activity = sides[OPTS.activity_side]~=nil
     mode.validity = sides[OPTS.validity_side]~=nil
     mode.enable = sides[OPTS.enable_side]~=nil
+    mode.empty = sides[OPTS.empty_side]~=nil
     if OPTS.help==true then --Help page
       print(
         "Usage: mixer_monitor [OPTION] [OPTION]...\n"..
@@ -35,6 +36,7 @@ meta={}
         "--activity_side=[SIDE]   Set the activity reporting side for redstone out\n"..
         "--validity_side=[SIDE]   Set the valid_recipe reporting side for redstone out\n"..
         "--enable_side=[SIDE]     Set the redstone machine_enable side for redstone in\n"..
+        "--empty_side=[SIDE]      Set the empty items reporting side for redstone out\n"..
         "--help                   Show this message and then close\n"
       )
       os.exit()
@@ -70,17 +72,17 @@ end
 --Machine Data Acquisition
 function getMachineData()
   local data={}
-  data.energyStored = component.ie_mixer.getEnergyStored()
-  data.maxEnergyStored = component.ie_mixer.getMaxEnergyStored()
+  data.energyStored = mixer.getEnergyStored()
+  data.maxEnergyStored = mixer.getMaxEnergyStored()
   --Format quick reference percent string
   data.energyPercent = tostring(math.min((data.energyStored/data.maxEnergyStored)*100)).."%"
-  data.fluidOutput = component.ie_mixer.getTank()
-  data.activity = component.ie_mixer.isActive()
-  data.validity = component.ie_mixer.isValidRecipe()
+  data.fluidOutput = mixer.getTank()
+  data.activity = mixer.isActive()
+  data.validity = mixer.isValidRecipe()
   --Creating Table of item inputs
   data.itemInputs = {}
   for i=1,8 do
-    data.itemInputs[i] = component.ie_mixer.getInputStack(i)
+    data.itemInputs[i] = mixer.getInputStack(i)
     --creates data.itemInputs table of 12 itemStack tables, occupied slots include fields for:
     --damage, 
     --hasTag (Has NBT Data Attached), 
@@ -137,17 +139,47 @@ function runLoop()
   end
   if OPTS.l then -- Check if fluid info is enabled
     termBuffer =(termBuffer .. "Fluid Output:\n "..
-    machineData.fluidOutput.amount.."mB x "..
-    machineData.fluidOutput.label..
-    " ("..machineData.fluidOutput.name..")\n")
+    tostring(machineData.fluidOutput.amount).."mB x "..
+    tostring(machineData.fluidOutput.label)..
+    " ("..tostring(machineData.fluidOutput.name)..")\n")
   end
+  if mode.activity then
+    local rsTable={[true]=15,[false]=0}
+    redstone.setOutput(sides[OPTS.activity_side],rsTable[machineData.activity])
+  end
+  if mode.validity then
+    local rsTable={[true]=15,[false]=0}
+    redstone.setOutput(sides[OPTS.validity_side],rsTable[machineData.validity])
+  end
+  if mode.enable then
+    mixer.enableComputerControl(true)
+    mixer.setEnabled(redstone.getInput(side[OPTS.enable_side])>0)
+    mixer.enableComputerControl(false)
+  end
+  if mode.empty then
+    local rsTable={[true]=15,[false]=0}
+    dataEmpty = false
+    for i=1,8 do
+      local itemData=machineData.itemInputs[i]
+      dataEmpty = dataEmpty or itemData.size~=nil
+    end
+    redstone.setOutput(sides[OPTS.empty_side], rsTable[dataEmpty])
+  end
+  
   if not OPTS.o then termBuffer = termBuffer .. "Press Q to exit program\n" end
   term.clear()
   term.write(termBuffer)
+  os.sleep(0.05)
 end
 
-repeat
-  runLoop()
-  os.sleep(0.05)
-until OPTS.o or keyboard.isKeyDown("q")
+ repeat
+  local success, err = pcall(runLoop)
+  if not success then
+    print("Unrecoverable Error: \n"..tostring(err))
+    computer.beep(50,5)
+  end
+ until OPTS.o or keyboard.isKeyDown("q") or not success
 
+
+print("Disconnect Computer Control")
+mixer.enableComputerControl(false)
