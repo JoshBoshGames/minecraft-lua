@@ -17,8 +17,8 @@ meta={}
     mode.validity = sides[OPTS.validity_side]~=nil
     mode.enable = sides[OPTS.enable_side]~=nil
     mode.empty = sides[OPTS.empty_side]~=nil
-    mode.ingredientCount = (sides[OPTS.ingredient_side]~nil and OPTS.key_ingredient~=nil)
-    if mode.ingredientCount then keyIngredientQuantity=0 end
+    mode.ingredientCount = (sides[OPTS.ingredient_side]~=nil and OPTS.key_ingredient~=nil)
+    
     if OPTS.help==true then --Help page
       print(
         "Usage: mixer_monitor [OPTION] [OPTION]...\n"..
@@ -31,6 +31,7 @@ meta={}
         "--enable_side=[SIDE]       Set the redstone machine_enable side for redstone in\n"..
         "--empty_side=[SIDE]        Set the empty items reporting side for redstone out\n"..
         "--key_ingredient=[REF]     Set the key ingredient to look for and monitor\n"..
+        "example: --key_ingredient=\"minecraft:grass\"\n"..
         "--ingredient_side=[SIDE]   Set the ingredient count monitor side for redstone output\n"..
         "--help                     Show this message and then close\n"
       )
@@ -173,20 +174,26 @@ function runLoop()
     local ingredientDeplete = false
     local rsTable={[true]=15,[false]=0}
       for i=1,8 do
-        local itemData=machineData.itemInputs[i]
+        itemData=machineData.itemInputs[i]
         if itemData.name==OPTS.key_ingredient then
-          redstone.setOutput(sides[OPTS.ingredient_side],rsTable[itemData.size < keyIngredientQuantity])
-          keyIngredientQuantity=itemData.Size[]
+          redstone.setOutput(sides[OPTS.ingredient_side],rsTable[tonumber(itemData.size) < tonumber(keyIngredientQuantity)])
+          if (tonumber(itemData.size) < tonumber(keyIngredientQuantity)) then ingredientDeplete=true end
+          keyIngredientQuantity=itemData.size
         end
       end
+      termBuffer =(termBuffer..
+      "Key Ingredient: "..
+      OPTS.key_ingredient..
+      " | Depleting: "..
+      tostring(ingredientDeplete).."\n")
   end
   
   if not OPTS.o then termBuffer = termBuffer .. "Press Q to exit program\n" end
   term.clear()
   term.write(termBuffer)
-  os.sleep(0.05)
 end
 
+keyIngredientQuantity=1
  repeat
   local success, err = pcall(runLoop)
   if not success then
