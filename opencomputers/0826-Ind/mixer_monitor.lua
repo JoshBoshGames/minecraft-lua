@@ -16,35 +16,36 @@ meta={}
     rs = component.redstone
     sides = require("sides")
     shell = require("shell")
+    keyboard= require("keyboard")
     
   --Acquire/Provide meta info
     ARGS, OPTS = shell.parse(...) --Pulls CLI options and arguments
-    if OPTS.help==true then --Help page
-      print(
-        "Usage: mixer_monitor [OPTION] [OPTION]...\n"..
-        "-e                       Show machine energy information"..
-        "-i                       Show machine item information"..
-        "-o                       Runs script once to get info snapshot"..
-        "--activity_side=[SIDE]   Set the activity reporting side for redstone out\n"..
-        "--validity_side=[SIDE]   Set the valid_recipe reporting side for redstone out\n"..
-        "--enable_side=[SIDE]     Set the redstone machine_enable side for redstone in\n"..
-        "--help                     Show this message and then close\n"
-      )
-      os.exit()
-    else
-      if #OPTS==0 then --Passive Mode Warning
-        print(
-          "WARNING - Program running with no options, will only read data\n"..
-          "For more information, run: mixer_monitor --help"
-        )
-        os.sleep(3)
-      end
-    end
   --Mode Switching
     mode={}
     mode.activity = sides[OPTS.activity_side]~=nil
     mode.validity = sides[OPTS.validity_side]~=nil
     mode.enable = sides[OPTS.enable_side]~=nil
+    if OPTS.help==true then --Help page
+      print(
+        "Usage: mixer_monitor [OPTION] [OPTION]...\n"..
+        "-e                       Show machine energy information\n"..
+        "-i                       Show machine item information\n"..
+        "-l                       Show machine fluid information\n"..
+        "-o                       Runs script once to get info snapshot\n"..
+        "--activity_side=[SIDE]   Set the activity reporting side for redstone out\n"..
+        "--validity_side=[SIDE]   Set the valid_recipe reporting side for redstone out\n"..
+        "--enable_side=[SIDE]     Set the redstone machine_enable side for redstone in\n"..
+        "--help                   Show this message and then close\n"
+      )
+      os.exit()
+    else
+        print(
+          "Program running in standard mode... "..
+          "For more information, run: mixer_monitor --help"
+        )
+        os.sleep(1)
+    end
+
 
 --Runtime Functions
   --Memory Watchdog, reboots if over 95% limit
@@ -120,20 +121,28 @@ function runLoop()
   "Recipe Valid: "..tostring(machineData.validity).."\n")
   if OPTS.i then -- Check if inventory info is enabled
     termBuffer =(termBuffer .. "Item Inputs:\n") 
-    for i=1,12 do
+    for i=1,8 do
       local itemData = machineData.itemInputs[i]
       if itemData.size ~= nil then
         termBuffer =(termBuffer..
           " Input "..i..": "..
           itemData.size.."x "..
+          itemData.label.." "..
           itemData.name)
           if itemData.hasTag then termBuffer =termBuffer.."(NBT)" end
           if itemData.maxDamage~=0 then termBuffer =(termBuffer.."(Dur:"..tostring(itemData.maxDamage - itemData.damage).."/"..itemData.maxDamage) end
-          termBuffer =(termBuffer.."\n" .."Progress: "..itemData.Progress.."/"..itemData.maxProgress.."\n")
+          termBuffer =(termBuffer.."\n" .."Progress: "..itemData.progress.."/"..itemData.maxProgress.."\n")
       end
     end
   end
+  if OPTS.l then -- Check if fluid info is enabled
+    termBuffer =(termBuffer .. "Fluid Output:\n "..
+    machineData.fluidOutput.amount.."mB x "..
+    machineData.fluidOutput.label..
+    " ("..machineData.fluidOutput.name..")\n")
+  end
   if not OPTS.o then termBuffer = termBuffer .. "Press Q to exit program\n" end
+  term.clear()
   term.write(termBuffer)
 end
 
@@ -141,16 +150,4 @@ repeat
   runLoop()
   os.sleep(0.05)
 until OPTS.o or keyboard.isKeyDown("q")
-
---OLD CODE
-
---getData
-
---Watchdog
-
---Monitoring
-
---ManageMachine
-
---MAIN PROCESS
 
