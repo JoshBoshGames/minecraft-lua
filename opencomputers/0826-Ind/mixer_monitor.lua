@@ -108,7 +108,7 @@ function runLoop()
   )
   --Call Watchdog and parse data
   watchdogData = watchdog()
-  termBuffer = termBuffer .. watchdogData.memstring .. "\n"
+  termBuffer = termBuffer .. watchdogData.memString .. "\n"
   
   --Read Machine Data and parse
   machineData = getMachineData()
