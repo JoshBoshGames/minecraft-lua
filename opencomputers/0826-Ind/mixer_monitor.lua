@@ -3,7 +3,7 @@ meta={
   name="Immersive Engineering Mixer Control",
   author="JoshBoshGames",
   version="v0.1.0",
-  view_url="https://github.com/JoshBoshGames/minecraft-lua/blob/main/opencomputers/0826-Ind/mixer_monitor.lua"
+  view_url="https://github.com/JoshBoshGames/minecraft-lua/blob/main/opencomputers/0826-Ind/mixer_monitor.lua",
   raw_update_url="https://raw.githubusercontent.com/JoshBoshGames/minecraft-lua/refs/heads/main/opencomputers/0826-Ind/mixer_monitor.lua"
 }
 
