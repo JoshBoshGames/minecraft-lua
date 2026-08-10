@@ -125,11 +125,10 @@ function runLoop()
         termBuffer =(termBuffer..
           " Input "..i..": "..
           itemData.size.."x "..
-          itemData.name..
-          {[true]="(NBT)", [false]=""}[itemData.hasTag==true]..
-          {[true]="(Dur:"..(itemData.maxDamage - itemData.damage).."/"..itemData.maxDamage, [false]=""}[itemData.maxDamage~=0]..
-          "\n" ..
-          "Progress: "..itemData.Progress.."/"..itemData.maxProgress.."\n")
+          itemData.name)
+          if itemData.hasTag then termBuffer =termBuffer.."(NBT)" end
+          if itemData.maxDamage~=0 then termBuffer =(termBuffer.."(Dur:"..tostring(itemData.maxDamage - itemData.damage).."/"..itemData.maxDamage) end
+          termBuffer =(termBuffer.."\n" .."Progress: "..itemData.Progress.."/"..itemData.maxProgress.."\n")
       end
     end
   end
