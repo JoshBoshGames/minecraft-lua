@@ -1,11 +1,10 @@
 -- Program Information
-meta={
-  name="Immersive Engineering Mixer Control",
-  author="JoshBoshGames",
-  version="v0.1.0",
-  view_url="https://github.com/JoshBoshGames/minecraft-lua/blob/main/opencomputers/0826-Ind/mixer_monitor.lua",
-  raw_update_url="https://raw.githubusercontent.com/JoshBoshGames/minecraft-lua/refs/heads/main/opencomputers/0826-Ind/mixer_monitor.lua"
-}
+meta={}
+  meta.name="Immersive Engineering Mixer Control",
+  meta.author="JoshBoshGames",
+  meta.version="v0.1.0",
+  meta.view_url="https://github.com/JoshBoshGames/minecraft-lua/blob/main/opencomputers/0826-Ind/mixer_monitor.lua",
+  meta.raw_update_url="https://raw.githubusercontent.com/JoshBoshGames/minecraft-lua/refs/heads/main/opencomputers/0826-Ind/mixer_monitor.lua"
 
 --Initialisation
   --redstoneSide="west"
