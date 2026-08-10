@@ -111,12 +111,10 @@ function runLoop()
   
   --Read Machine Data and parse
   machineData = getMachineData()
-  termBuffer =(termBuffer .. 
-  (if OPTS.e then -- Check if energy info is enabled
-    return "Energy: " .. machineData.energyStored .. "/" .. machineData.maxEnergyStored .. "(" .. machineData.energyPercent .. ")"
-  else
-    return ""
-  end) ..
+  if OPTS.e then -- Check if energy info is enabled
+    termBuffer =(termBuffer .. "Energy: " .. machineData.energyStored .. "/" .. machineData.maxEnergyStored .. "(" .. machineData.energyPercent .. ")\n"
+  end
+  termBuffer =(termBuffer ..
   "Machine Active: "..machineData.activity.."\n"..
   "Recipe Valid: "..machineData.validity.."\n"..
   if OPTS.i then return "Item Inputs:\n" else return "" end
