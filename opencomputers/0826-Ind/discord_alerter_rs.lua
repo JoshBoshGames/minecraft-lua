@@ -10,7 +10,7 @@ meta={
 -- Program constants
 constant={
   discord_url="*INSERT_WEBHOOK_URL_HERE*"  -- Setting discord URL to enable webhook use
-  message="*INSERT_ALERT*MESSAGE_HERE*"  -- Setting Alert Message to send to discord
+  message="*INSERT_ALERT_MESSAGE_HERE*"  -- Setting Alert Message to send to discord
 }
 
 -- Loading Libraries and 'Hardware' hooks
@@ -33,10 +33,15 @@ while true do
   if rs_signal.old_strength == 0 and rs_signal.new_strength ~= 0 then -- Test if change relates to redstone activation
     -- Activate webhook
     local payload = '{"content": "' .. constant.message .. '"}'
-  
     local headers = {
       ["Content-Type"] = "application/json"
     }
-    
+    timeout = 1 -- exponential retry timeout to avoid anti-spam blocking
+    repeat
+      os.beep(20,timeout)
+      timeot = timeout*2
+      local request, err = internet.request(const.discord_url, payload, headers, "POST")
+    until request.finishConnect()
+      computer.beep(200,0.1) computer.beep(250,0.1) computer.beep(300,0.1) computer.beep(400,0.1) -- Send Success SFX
   end
 end
