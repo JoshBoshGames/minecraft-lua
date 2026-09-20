@@ -38,7 +38,7 @@ while true do
     }
     timeout = 1 -- exponential retry timeout to avoid anti-spam blocking
     repeat
-      os.beep(20,timeout)
+      computer.beep(20,timeout)
       timeot = timeout*2
       local request, err = internet.request(const.discord_url, payload, headers, "POST")
     until request.finishConnect()
