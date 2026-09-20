@@ -1,6 +1,6 @@
 -- Program Information
 meta={
-  name="Discord Alerter Microcontroller - Redstone Trigger"
+  name="Discord Alerter Microcontroller - Redstone Trigger",
   author="JoshBoshGames",
   version="v0.0.1",
   view_url="https://github.com/JoshBoshGames/minecraft-lua/blob/main/opencomputers/0826-Ind/discord_alerter_rs.lua",
