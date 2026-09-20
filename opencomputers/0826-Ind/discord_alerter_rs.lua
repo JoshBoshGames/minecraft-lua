@@ -37,6 +37,7 @@ while true do
       ["Content-Type"] = "application/json"
     }
     timeout = 1 -- exponential retry timeout to avoid anti-spam blocking
+    request=""
     repeat
       computer.beep(20,timeout)
       timeot = timeout*2
