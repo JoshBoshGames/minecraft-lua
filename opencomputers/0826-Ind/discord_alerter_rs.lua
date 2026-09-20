@@ -36,13 +36,7 @@ while true do
     headers = {
       ["Content-Type"] = "application/json"
     }
-    timeout = 1 -- exponential retry timeout to avoid anti-spam blocking
-    request=""
-    repeat
-      computer.beep(20,timeout)
-      timeot = timeout*2
-      request, err = internet.request(constant.discord_url, payload, headers, "POST")
-    until table.pack(request.response())[1] == 200
-      computer.beep(200,0.1) computer.beep(250,0.1) computer.beep(300,0.1) computer.beep(400,0.1) -- Send Success SFX
+    request, err = internet.request(constant.discord_url, payload, headers, "POST")
+    computer.beep(200,0.1) computer.beep(250,0.1) computer.beep(300,0.1) computer.beep(400,0.1) -- Send Success SFX
   end
 end
