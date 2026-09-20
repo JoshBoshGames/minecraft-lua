@@ -32,8 +32,8 @@ while true do
   
   if rs_signal.old_strength == 0 and rs_signal.new_strength ~= 0 then -- Test if change relates to redstone activation
     -- Activate webhook
-    local payload = '{"content": "' .. constant.message .. '"}'
-    local headers = {
+    payload = '{"content": "' .. constant.message .. '"}'
+    headers = {
       ["Content-Type"] = "application/json"
     }
     timeout = 1 -- exponential retry timeout to avoid anti-spam blocking
