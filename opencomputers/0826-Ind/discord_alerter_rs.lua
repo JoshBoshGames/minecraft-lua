@@ -9,7 +9,7 @@ meta={
 
 -- Program constants
 constant={
-  discord_url="*INSERT_WEBHOOK_URL_HERE*"  -- Setting discord URL to enable webhook use
+  discord_url="*INSERT_WEBHOOK_URL_HERE*",  -- Setting discord URL to enable webhook use
   message="*INSERT_ALERT_MESSAGE_HERE*"  -- Setting Alert Message to send to discord
 }
 
