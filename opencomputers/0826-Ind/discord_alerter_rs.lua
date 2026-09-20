@@ -41,7 +41,7 @@ while true do
       computer.beep(20,timeout)
       timeot = timeout*2
       local request, err = internet.request(constant.discord_url, payload, headers, "POST")
-    until request.finishConnect()
+    until table.pack(request.response())[1] == 200
       computer.beep(200,0.1) computer.beep(250,0.1) computer.beep(300,0.1) computer.beep(400,0.1) -- Send Success SFX
   end
 end
