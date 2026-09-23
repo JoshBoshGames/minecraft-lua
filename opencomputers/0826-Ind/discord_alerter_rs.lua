@@ -37,6 +37,8 @@ while true do
       ["Content-Type"] = "application/json"
     }
     request, err = internet.request(constant.discord_url, payload, headers, "POST")
-    computer.beep(200,0.1) computer.beep(250,0.1) computer.beep(300,0.1) computer.beep(400,0.1) -- Send Success SFX
+    if not err then
+      computer.beep(200,0.1) computer.beep(250,0.1) computer.beep(300,0.1) computer.beep(400,0.1) -- Send Success SFX
+    end
   end
 end
