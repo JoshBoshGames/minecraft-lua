@@ -37,7 +37,7 @@ while true do
       ["Content-Type"] = "application/json"
     }
     request, err = internet.request(constant.discord_url, payload, headers, "POST")
-    response_code = table.pack(request.response())[1]
+    response_code = tonumber(table.pack(request.response())[1])
     if response_code >= 200 and response_code <=299 then
       computer.beep(200,0.1) computer.beep(250,0.1) computer.beep(300,0.1) computer.beep(400,0.1) -- Send Success SFX
     else
