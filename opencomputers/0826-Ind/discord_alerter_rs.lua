@@ -14,8 +14,6 @@ constant={
 }
 
 -- Loading Libraries and 'Hardware' hooks
-component = require("component")
-computer = require("computer")
 internet = component.proxy(component.list("internet")())
 
 -- Program main loop
